@@ -10,7 +10,11 @@ server.exe -h=":8080" -jk="qwerty" -dsn="root:qwerty@tcp(192.168.99.100)/logs"
 
 ## Store a log
 
-`POST /logs`
+```
+POST /logs
+
+Authorization: Bearer {token}
+```
 
 ```json
 {
@@ -25,7 +29,11 @@ server.exe -h=":8080" -jk="qwerty" -dsn="root:qwerty@tcp(192.168.99.100)/logs"
 
 ## Get list of logs
 
-`GET /logs`
+```
+GET /logs
+
+Authorization: Bearer {token}
+```
 
 **Response**
 
@@ -44,4 +52,24 @@ server.exe -h=":8080" -jk="qwerty" -dsn="root:qwerty@tcp(192.168.99.100)/logs"
         "created_at": "2020-04-19 16:06:36"
     }
 ]
+```
+
+# JWT Token
+
+**Headers**
+
+```json
+{
+  "alg": "HS512",
+  "typ": "JWT"
+}
+```
+
+**Payload**
+
+```json
+{
+  "name": "test@test.com",
+  "iat": 1516239022
+}
 ```
