@@ -63,6 +63,6 @@ func (t TestRepository) List(criteria *logs.SearchCriteria) ([]logs.Record, erro
 	return records, nil
 }
 
-func (t TestRepository) Resist(record logs.Record) error {
+func (t TestRepository) Persist(record logs.Record) error {
 	return errors.New("test")
 }

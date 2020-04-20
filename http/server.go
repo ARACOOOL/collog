@@ -3,8 +3,8 @@ package http
 import (
 	"encoding/json"
 	"github.com/aracoool/face/logs"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -30,7 +30,7 @@ func (s *Server) registerRoutes() {
 
 //run runs the server
 func (s *Server) run() {
-	log.Println("Running a server on a port " + s.config.ServerHost)
+	log.Info("Running a server on a port " + s.config.ServerHost)
 	log.Fatal(http.ListenAndServe(s.config.ServerHost, s.router))
 }
 
@@ -40,6 +40,7 @@ func (s *Server) respondWithJson(w http.ResponseWriter, r *http.Request, data in
 	w.WriteHeader(status)
 	err := json.NewEncoder(w).Encode(data)
 	if err != nil {
+		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		_ = json.NewEncoder(w).Encode(ServerError{
 			Status:  "error",
@@ -54,6 +55,7 @@ func (s *Server) handlerLogCreate(w http.ResponseWriter, r *http.Request) {
 
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		log.Error(err)
 		s.respondWithJson(w, r, ServerError{
 			Status:  "error",
 			Message: err.Error(),
@@ -65,6 +67,7 @@ func (s *Server) handlerLogCreate(w http.ResponseWriter, r *http.Request) {
 
 	record, err = s.command.Create(record)
 	if err != nil {
+		log.Error(err)
 		s.respondWithJson(w, r, ServerError{
 			Status:  "error",
 			Message: err.Error(),
@@ -81,6 +84,7 @@ func (s *Server) handlerLogsList(w http.ResponseWriter, r *http.Request) {
 
 	records, err := s.command.List(r.URL.Query())
 	if err != nil {
+		log.Error(err)
 		s.respondWithJson(w, r, ServerError{
 			Status:  "error",
 			Message: err.Error(),

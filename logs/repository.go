@@ -13,6 +13,6 @@ func (e RepositoryError) Error() string {
 
 //Repository ...
 type Repository interface {
-	Resist(record Record) error
+	Persist(record Record) error
 	List(criteria *SearchCriteria) ([]Record, error)
 }

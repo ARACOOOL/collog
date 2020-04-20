@@ -74,7 +74,7 @@ type EmptyRepository struct {
 	records []logs.Record
 }
 
-func (t *EmptyRepository) Resist(record logs.Record) error {
+func (t *EmptyRepository) Persist(record logs.Record) error {
 	t.records = append(t.records, record)
 	return nil
 }

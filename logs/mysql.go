@@ -3,6 +3,7 @@ package logs
 import (
 	"database/sql"
 	"encoding/json"
+	"github.com/aracoool/face/errors"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -30,14 +31,16 @@ func (m *MysqlRepository) connect() error {
 }
 
 func (m *MysqlRepository) List(criteria *SearchCriteria) ([]Record, error) {
+	var op errors.Op = "MysqlRepository.List"
+
 	err := m.connect()
 	if err != nil {
-		return []Record{}, RepositoryError{Message: "could not connect to DB", Previous: err}
+		return []Record{}, errors.E(op, err)
 	}
 
 	stmt, err := m.db.Prepare(criteria.BuildQuery(tableName))
 	if err != nil {
-		return []Record{}, RepositoryError{Message: "could not get a list of logs", Previous: err}
+		return []Record{}, errors.E(op, err)
 	}
 	defer stmt.Close()
 
@@ -50,7 +53,7 @@ func (m *MysqlRepository) List(criteria *SearchCriteria) ([]Record, error) {
 		_ = rows.Scan(&r.ID, &r.Source, &r.Category, &r.Level, &r.Message, &r.Trace, &payload, &r.CreatedAt)
 		err = json.Unmarshal([]byte(payload), &r.Payload)
 		if err != nil {
-			return []Record{}, RepositoryError{Message: "could not read a payload", Previous: err}
+			return []Record{}, errors.E(op, err)
 		}
 
 		records = append(records, r)
@@ -59,26 +62,28 @@ func (m *MysqlRepository) List(criteria *SearchCriteria) ([]Record, error) {
 	return records, nil
 }
 
-func (m *MysqlRepository) Resist(record Record) error {
+func (m *MysqlRepository) Persist(record Record) error {
+	var op errors.Op = "MysqlRepository.Persist"
+
 	err := m.connect()
 	if err != nil {
-		return RepositoryError{Message: "could not connect to DB", Previous: err}
+		return errors.E(op, err)
 	}
 
 	stmt, err := m.db.Prepare("INSERT INTO " + tableName + "(id, source, category, level, message, trace, payload, created_at) VALUES (?,?,?,?,?,?,?,?)")
 	if err != nil {
-		return RepositoryError{Message: "could not persist a logs record", Previous: err}
+		return errors.E(op, err)
 	}
 	defer stmt.Close()
 
 	payload, err := json.Marshal(record.Payload)
 	if err != nil {
-		return RepositoryError{Message: "could not persist a logs record", Previous: err}
+		return errors.E(op, err)
 	}
 
 	_, err = stmt.Exec(record.ID, record.Source, record.Category, record.Level, record.Message, record.Trace, payload, record.CreatedAt)
 	if err != nil {
-		return RepositoryError{Message: "could not persist a logs record", Previous: err}
+		return errors.E(op, err)
 	}
 
 	return nil
