@@ -80,5 +80,6 @@ func (t *EmptyRepository) Resist(record logs.Record) error {
 }
 
 func (t *EmptyRepository) List(criteria *logs.SearchCriteria) ([]logs.Record, error) {
+	t.records = make([]logs.Record, 0)
 	return t.records, nil
 }
