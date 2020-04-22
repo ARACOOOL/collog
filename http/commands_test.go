@@ -1,7 +1,8 @@
 package http
 
 import (
-	"errors"
+	errors2 "errors"
+	"github.com/aracoool/face/errors"
 	"github.com/aracoool/face/logs"
 	"reflect"
 	"testing"
@@ -20,8 +21,8 @@ func TestCreateHandler(t *testing.T) {
 		CreatedAt: "",
 	})
 
-	if reflect.TypeOf(err) != reflect.TypeOf(logs.Error) {
-		t.Errorf("returned error should be HandlerError type")
+	if reflect.TypeOf(err) != reflect.TypeOf(&errors.Error{}) {
+		t.Errorf("returned error should be *errors.Error{} type")
 	}
 
 	if record.ID == "" {
@@ -37,8 +38,8 @@ func TestListHandler(t *testing.T) {
 	handler := Command{TestRepository{}}
 	records, err := handler.List(map[string][]string{})
 
-	if err != nil && reflect.TypeOf(err) != reflect.TypeOf(logs.Error) {
-		t.Errorf("returned error should be HandlerError type")
+	if err != nil && reflect.TypeOf(err) != reflect.TypeOf(&errors.Error{}) {
+		t.Errorf("returned error should be *errors.Error{} type")
 	}
 
 	if len(records) != 1 {
@@ -64,5 +65,5 @@ func (t TestRepository) List(criteria *logs.SearchCriteria) ([]logs.Record, erro
 }
 
 func (t TestRepository) Persist(record logs.Record) error {
-	return errors.New("test")
+	return errors2.New("test")
 }
