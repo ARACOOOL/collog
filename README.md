@@ -1,5 +1,7 @@
 # collog
 
+Collog is a standalone server that provides a REST API to collect your logs.
+
 # Launch
 
 ```bash
