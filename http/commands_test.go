@@ -20,7 +20,7 @@ func TestCreateHandler(t *testing.T) {
 		CreatedAt: "",
 	})
 
-	if reflect.TypeOf(err) != reflect.TypeOf(HandlerError{}) {
+	if reflect.TypeOf(err) != reflect.TypeOf(logs.Error) {
 		t.Errorf("returned error should be HandlerError type")
 	}
 
@@ -37,7 +37,7 @@ func TestListHandler(t *testing.T) {
 	handler := Command{TestRepository{}}
 	records, err := handler.List(map[string][]string{})
 
-	if err != nil && reflect.TypeOf(err) != reflect.TypeOf(HandlerError{}) {
+	if err != nil && reflect.TypeOf(err) != reflect.TypeOf(logs.Error) {
 		t.Errorf("returned error should be HandlerError type")
 	}
 
