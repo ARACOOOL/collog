@@ -1,5 +1,7 @@
 # collog
 
+[![Build Status](https://travis-ci.org/ARACOOOL/collog.svg?branch=master)](https://travis-ci.org/ARACOOOL/collog)
+
 Collog is a standalone server that provides a REST API to collect your logs.
 
 # Launch
