@@ -37,7 +37,7 @@ func authenticationMiddleware(signingKey string, next func(w http.ResponseWriter
 		if email == nil {
 			_ = json.NewEncoder(w).Encode(ServerError{
 				Status:  "error",
-				Message: "Token is invalid",
+				Message: "Token is invalid: email is required",
 			})
 			return
 		}
