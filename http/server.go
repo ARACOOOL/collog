@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -31,7 +32,16 @@ func (s *Server) registerRoutes() {
 //run runs the server
 func (s *Server) run() {
 	log.Info("Running a server on a port " + s.config.ServerHost)
-	log.Fatal(http.ListenAndServe(s.config.ServerHost, s.router))
+
+	server := &http.Server{
+		Handler: s.router,
+		Addr: s.config.ServerHost,
+		WriteTimeout: time.Second * 2,
+		ReadTimeout: time.Second * 2,
+		IdleTimeout: time.Second * 2,
+	}
+
+	log.Fatal(server.ListenAndServe())
 }
 
 //respondWithJson responds with JSON
