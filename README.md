@@ -10,6 +10,14 @@ Collog is a standalone server that provides a REST API to collect your logs.
 server.exe -h=":8080" -jk="qwerty" -dsn="root:qwerty@tcp(192.168.99.100)/logs"
 ```
 
+## Parameters
+```
+h   - server host
+jk  - JWT secret key
+ld  - Logs directory (for the server logs)
+dsn - Mysql data source name
+```
+
 # Usage
 
 ## Store a log
