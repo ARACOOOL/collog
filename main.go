@@ -23,7 +23,6 @@ func main() {
 	serverHost := flag.String("h", "", "Server host")
 	flag.Parse()
 
-
 	http.RunNewServer(http.Config{
 		Dsn:        *dsn,
 		JwtSecret:  *jwtSecret,
