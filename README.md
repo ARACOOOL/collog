@@ -58,6 +58,18 @@ Authorization: Bearer {token}
 ]
 ```
 
+## Filter parameters
+
+Filter by a name of source
+`/logs?source={sourceName}`
+
+Filter by a name of category
+`/logs?category={categoryName}`
+
+
+Filter by an error level
+`/logs?level=400`
+
 # JWT Token
 
 **Headers**
@@ -73,7 +85,9 @@ Authorization: Bearer {token}
 
 ```json
 {
-  "name": "test@test.com",
+  "email": "test@test.com",
   "iat": 1516239022
 }
 ```
+
+[JWT documentation](https://jwt.io/)
